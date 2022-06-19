@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700;900&display=swap');
+
+html, body{
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+/* Input field font size */
+.input-font, input::placeholder{
+    font-size: 14px;
+}
+
+#login{
+    display: none;
+}
+
+#warranty-add-button:hover{
+    border-radius: 2rem !important;
+    transition: .5s;
+}
+
+#warranty-add-button:not(:hover){
+    border-radius: 0rem !important;
+    transition: .5s;
+}
+
