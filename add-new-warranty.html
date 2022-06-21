@@ -41,7 +41,7 @@
     <div class="container">
         <div class="card shadow p-3 my-5 bg-body rounded-0 border-0">
             <div class="p-3">
-                <form action="">
+                <form action="" method="post">
                     <div class="row">
                         <h3 class="text-center fw-bold mb-3">
                             Add New Warranty
@@ -49,38 +49,38 @@
                         </h3>
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="companyName" class="form-label">Company Name</label>
-                                <input type="text" class="form-control form-control-lg rounded-0 input-font" id="companyName" placeholder="Enter company name">
+                                <label for="warrantyCompanyName" class="form-label">Company Name</label>
+                                <input type="text" class="form-control form-control-lg rounded-0 input-font" id="warrantyCompanyName" name="warrantyCompanyName" placeholder="Enter company name">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="productBrand" class="form-label">Product Brand</label>
-                                <input type="text" class="form-control form-control-lg rounded-0 input-font" id="productBrand" placeholder="Enter product brand">
+                                <input type="text" class="form-control form-control-lg rounded-0 input-font" id="productBrand" name="productBrand" placeholder="Enter product brand">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="productCategory" class="form-label">Product Category</label>
-                                <input type="text" class="form-control form-control-lg rounded-0 input-font" id="productCategory" placeholder="Enter product category">
+                                <input type="text" class="form-control form-control-lg rounded-0 input-font" id="productCategory" name="productCategory" placeholder="Enter product category">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="purchaseDate" class="form-label">Purchase Date</label>
-                                <input type="date" class="form-control form-control-lg rounded-0 input-font" id="purchaseDate" placeholder="Select purchase date">
+                                <input type="date" class="form-control form-control-lg rounded-0 input-font" id="purchaseDate" name="purchaseDate" placeholder="Select purchase date">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="warrantyDuration" class="form-label">Warranty Duration</label>
-                                <input type="number" class="form-control form-control-lg rounded-0 input-font" id="warrantyDuration" placeholder="Enter warranty duration">
+                                <input type="number" class="form-control form-control-lg rounded-0 input-font" id="warrantyDuration" name="warrantyDuration" placeholder="Enter warranty duration">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label class="form-label" for="inlineFormSelectPref">Unit</label>
-                                <select class="form-control form-control-lg rounded-0 input-font form-select" id="inlineFormSelectPref">
+                                <label class="form-label" for="warrantyUnit">Unit</label>
+                                <select class="form-control form-control-lg rounded-0 input-font form-select" id="warrantyUnit" name="warrantyUnit">
                                     <option selected>Choose...</option>
                                     <option value="1">Day(s)</option>
                                     <option value="2">Month(s)</option>
@@ -89,12 +89,12 @@
                             </div>
                         </div>
                     </div>
+                    <div class="float-lg-end d-grid">
+                        <button type="submit" name="add_warranty" class="btn btn-outline-primary rounded-0" id="warranty-add-button">
+                            <small>Add Warranty</small>
+                        </button>
+                    </div>
                 </form>
-                <div class="float-lg-end d-grid">
-                    <button type="submit" class="btn btn-outline-primary rounded-0" id="warranty-add-button">
-                        <small>Add Warranty</small>
-                    </button>
-                </div>
             </div>
         </div>
     </div>
@@ -102,5 +102,57 @@
     
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+    <?php
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "warranty_period";
+
+        // add new warranty php code starts here
+        if(isset($_POST['add_warranty'])){
+
+            // Create connection
+            $conn = mysqli_connect($servername, $username, $password, $dbname);
+
+            // Check connection
+            if (!$conn) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+
+            // storing user input values for new warranty
+            $company_name = $_POST['warrantyCompanyName'];
+            $product_brand = $_POST['productBrand'];
+            $product_category = $_POST['productCategory'];
+            $purchase_date = date('Y-m-d', strtotime($_POST['purchaseDate']));
+            $warranty_duration = $_POST['warrantyDuration'];
+            $unit = $_POST['warrantyUnit'];
+
+            echo $company_name . ' ';
+            echo $product_brand . ' ';
+            echo $product_category . ' ';
+            echo $purchase_date . ' ';
+            echo $warranty_duration . ' ';
+            echo $unit . ' ';
+
+            $sql = "INSERT INTO new_warranty (`company_name`, `product_brand`, `product_category`, `purchase_date`, `warranty_duration`, `unit` ) VALUES ('$company_name', '$product_brand', '$product_category', '$purchase_date', '$warranty_duration', '$unit')";
+
+            if (mysqli_query($conn, $sql)) {
+                echo "
+                    <script type='text/javascript'>
+                        alert('Warranty Added Successful.');
+                    </script>
+                ";
+            } else {
+                echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+            }
+            $conn->close();
+        }
+        // add new warranty php code ends here
+
+    ?>
+    
+    <!-- Theme JS -->
+    <script src="./style/js/theme.js"></script>
 </body>
 </html>
